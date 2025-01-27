@@ -36,10 +36,6 @@ const userRouter = express.Router();
  *               password:
  *                 type: string
  *                 description: The password of the user
- *               role:
- *                 type: string
- *                 description: The role of the user (default is "Team Member")
- *                 enum: [Project Manager, Team Lead, Team Member]
  *     responses:
  *       201:
  *         description: User created successfully

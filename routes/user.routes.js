@@ -1,5 +1,7 @@
 const express = require("express");
-const { createUser, loginUser } = require("../controllers/user.controller");
+const { createUser, loginUser, updateRole } = require("../controllers/user.controller");
+const { authentication } = require("../middlewares/authentication.middleware");
+const { authorization } = require("../middlewares/authorization.middleware");
 
 const userRouter = express.Router();
 
@@ -128,5 +130,77 @@ userRouter.post("/register", createUser);
  *                   example: Internal Server Error
  */
 userRouter.post("/login", loginUser);
+
+
+/**
+ * @swagger
+ * /user/role:
+ *   patch:
+ *     summary: Update the role of a user
+ *     tags: [Users]
+ *     security:
+ *       - Auth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - role
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The email of the user whose role is to be updated
+ *               role:
+ *                 type: string
+ *                 description: The new role of the user
+ *                 enum: [Team Lead, Team Member]
+ *     responses:
+ *       200:
+ *         description: User role updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                   example: Role updated successfully
+ *       400:
+ *         description: Invalid request or user not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                   example: Invalid request or user not found
+ *        
+ *       403:
+ *         description: Forbidden, only Project Managers can update roles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                   example: Forbidden
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                   example: Internal Server Error
+ */
+
+userRouter.patch("/role/:id", authentication, authorization(["Project Manager"]), updateRole);
 
 module.exports = {userRouter}

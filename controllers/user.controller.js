@@ -40,7 +40,11 @@ const loginUser = async (req,res) => {
         return res.status(400).send({msg:"Invalid Credentials"});
     }
 
-    const token = jwt.sign({email:isPresent.email, role: isPresent.role}, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { email: isPresent.email, role: isPresent.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' } 
+    );
 
     res.status(200).send({msg:"Logged in successfully", token});
 
@@ -48,4 +52,29 @@ const loginUser = async (req,res) => {
     res.status(500).send({msg:"Internal Server Error"});
   }
 }
-module.exports = {createUser, loginUser};
+
+//make sure the assigned role is not Project manager
+const updateRole = async (req,res) => {
+    const userId = req.params.id;
+    const {role} = req.body;
+
+    try{
+        const user = await UserModel.findById(userId);
+
+        if(!user){
+            return res.status(400).send({msg:"User not found"});
+        }
+
+        if(user.role === "Project Manager" || role === "Project Manager"){
+            return res.status(400).send({msg:"Not allowed to change the role of Project Manager or to assign Project Manager role"});
+        }
+
+        await UserModel.findByIdAndUpdate(userId,{role});
+
+        res.status(200).send({msg:"Role updated successfully"});
+    }catch(err){
+        console.log("error in updateRole", err)
+        res.status(500).send({msg:"Internal Server Error"});
+    }
+}
+module.exports = {createUser, loginUser, updateRole};

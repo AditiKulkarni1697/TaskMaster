@@ -3,7 +3,6 @@ const { connection } = require("./databases/mongodb/connection");
 const {userRouter} = require("./routes/user.routes");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const { title } = require("process");
 
 require("dotenv").config();
 
@@ -21,7 +20,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: "http://localhost:3000",
+                url: `http://localhost:${process.env.PORT}`,
             },
         ],
     },

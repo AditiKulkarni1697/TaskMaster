@@ -1,9 +1,10 @@
 const express = require("express");
 const { connection } = require("./databases/mongodb/connection");
-const {userRouter, taskRouter} = require("./routes/user.routes");
+const {userRouter} = require("./routes/user.routes");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const { teamRouter } = require("./routes/team.routes");
+const { taskRouter } = require("./routes/task.routes");
 
 require("dotenv").config();
 

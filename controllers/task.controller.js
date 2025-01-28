@@ -51,6 +51,12 @@ const getTasks = async (req, res) => {
   if (req.query.assigned_to) {
     query.assigned_to = req.query.assigned_to;
   }
+  if (req.query.title) {
+    query.title = req.query.title;
+  }
+  if (req.query.description) {
+    query.description = req.query.description;
+  }
   try {
     const tasks = await TaskModel.find(query).sort({ due_date: order });
     res.status(200).send({ data: tasks });

@@ -1,6 +1,6 @@
 const express = require("express");
 const { connection } = require("./databases/mongodb/connection");
-const {userRouter} = require("./routes/user.routes");
+const {userRouter, taskRouter} = require("./routes/user.routes");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
@@ -31,6 +31,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/user",userRouter);
+app.use("/task",taskRouter);
 
 app.listen(process.env.PORT,async()=>{
     try{

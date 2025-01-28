@@ -7,11 +7,11 @@ const { taskValidation } = require('../middlewares/taskValidation.middleware');
 
 const taskRouter = express.Router();
 
-taskRouter.post('/',authentication, authorization(["Project Manager", "Team Lead"]), taskValidation ,createTask);
+taskRouter.post('/:team_id',authentication, authorization(["Project Manager", "Team Lead"]), taskValidation ,createTask);
 
-taskRouter.put('/:id',authentication, authorization(["Project Manager", "Team Lead"]), taskValidation, updateTask);
+taskRouter.put('/:team_id/:id',authentication, authorization(["Project Manager", "Team Lead"]), taskValidation, updateTask);
 
-taskRouter.delete('/:id',authentication, authorization(["Project Manager", "Team Lead"]), deleteTask);
+taskRouter.delete('/:team_id/:id',authentication, authorization(["Project Manager", "Team Lead"]), deleteTask);
 
 taskRouter.get('/',authentication, getTasks);
 

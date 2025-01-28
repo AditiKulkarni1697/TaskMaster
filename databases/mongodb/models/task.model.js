@@ -22,6 +22,12 @@ const taskSchema = new mongoose.Schema({
         enum: ["incomplete","completed"],
         default: "incomplete",
     },
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment",
+        }
+    ]
 });
 
 const TaskModel = mongoose.model("Task",taskSchema);

@@ -1,10 +1,13 @@
 const { TaskModel } = require("../databases/mongodb/models/task.model");
+const { addTaskToTeam } = require("../services/task.services");
 
 const createTask = async (req, res) => {
-  const { title, description, due_date, assigned_to } = req.body;
+  const { title, description, due_date, assigned_to, team_id } = req.body;
   try {
     const task = new TaskModel({ title, description, due_date, assigned_to });
     await task.save();
+
+    await addTaskToTeam(team_id, task._id, assigned_to);
     res.status(201).send({ msg: "Task created successfully" });
   } catch (err) {
     res.status(500).send({ msg: "Internal Server Error" });
@@ -13,9 +16,11 @@ const createTask = async (req, res) => {
 
 const updateTask = async (req, res) => {
   const taskId = req.params.id;
+  const teamId = req.params.team_id;
   const payload = req.body;
   try {
     await TaskModel.findByIdAndUpdate(taskId, { payload });
+    await addTaskToTeam(teamId, taskId, payload.assigned_to);
     res.status(200).send({ msg: "Task updated successfully" });
   } catch (err) {
     res.status(500).send({ msg: "Internal Server Error" });
@@ -24,7 +29,9 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   const taskId = req.params.id;
+  const teamId = req.params.team_id;
   try {
+    await removeTaskFromTeam(teamId, taskId)
     await TaskModel.findByIdAndDelete(taskId);
     res.status(200).send({ msg: "Task deleted successfully" });
   } catch (err) {

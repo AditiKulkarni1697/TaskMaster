@@ -3,6 +3,7 @@ const { connection } = require("./databases/mongodb/connection");
 const {userRouter, taskRouter} = require("./routes/user.routes");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const { teamRouter } = require("./routes/team.routes");
 
 require("dotenv").config();
 
@@ -32,6 +33,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/user",userRouter);
 app.use("/task",taskRouter);
+app.use("/team",teamRouter);
 
 app.listen(process.env.PORT,async()=>{
     try{

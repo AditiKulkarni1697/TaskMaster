@@ -5,6 +5,8 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const { teamRouter } = require("./routes/team.routes");
 const { taskRouter } = require("./routes/task.routes");
+const { commentRouter } = require("./routes/comment.routes");
+const { attachmentRouter } = require("./routes/attachment.routes");
 
 require("dotenv").config();
 
@@ -35,6 +37,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/user",userRouter);
 app.use("/task",taskRouter);
 app.use("/team",teamRouter);
+app.use("/comment",commentRouter);
+app.use("/attachment",attachmentRouter);
 
 app.listen(process.env.PORT,async()=>{
     try{

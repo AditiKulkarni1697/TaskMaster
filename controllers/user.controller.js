@@ -121,4 +121,14 @@ const getUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser, loginUser, updateRole, updateUser, getUser };
+const logoutUser = async (req, res) => {
+  try {
+    const token = new BlacklistModel({ token: req.token });
+    await token.save();
+    res.status(200).send({ msg: "Logged out successfully" });
+  } catch (err) {
+    res.status(500).send({ msg: "Internal Server Error" });
+  }
+};
+
+module.exports = { createUser, loginUser, updateRole, updateUser, getUser, logoutUser };

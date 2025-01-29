@@ -15,7 +15,7 @@ A user can create a new account so that he/she can access the task tracking plat
 
 A user can log in to his/her account securely using my credentials.
 
---A user can view my profile and update my personal information.
+A user can view my profile and update his/her personal information.
 
 A task can be created by PM or TL inside a team. (TL should be member of the team where task is created).
 
@@ -37,7 +37,7 @@ Project Manager will assign a team member as Team Lead.
 
 A team can be updated and deleted only by PM or TL.
 
---A user can securely log out of his/her account when he/she done using the platform.
+A user can securely log out of his/her account when he/she done using the platform.
 
 --(Optional Extension) As a user, I want to receive notifications when a task is assigned to me or updated. (Implement real-time notifications using WebSockets or Server-Sent Events)
 

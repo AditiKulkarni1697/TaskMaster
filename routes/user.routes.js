@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, loginUser, updateRole, updateUser, getUser } = require("../controllers/user.controller");
+const { createUser, loginUser, updateRole, updateUser, getUser, logoutUser } = require("../controllers/user.controller");
 const { authentication } = require("../middlewares/authentication.middleware");
 const { authorization } = require("../middlewares/authorization.middleware");
 
@@ -207,5 +207,7 @@ userRouter.patch("/role/:team_id/:id", authentication, authorization(["Project M
 userRouter.patch("/:id", authentication, updateUser);
 
 userRouter.get("/:id", authentication, getUser);
+
+userRouter.get("/logout",authentication, logoutUser)
 
 module.exports = {userRouter}

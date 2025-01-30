@@ -2,6 +2,7 @@ const express = require("express");
 const { createUser, loginUser, updateRole, updateUser, getUser, logoutUser } = require("../controllers/user.controller");
 const { authentication } = require("../middlewares/authentication.middleware");
 const { authorization } = require("../middlewares/authorization.middleware");
+const { userValidation } = require("../middlewares/userValidation.middleware");
 
 const userRouter = express.Router();
 
@@ -70,7 +71,7 @@ const userRouter = express.Router();
  *                   type: string
  *                   example: Internal Server Error
  */
-userRouter.post("/register", createUser);
+userRouter.post("/register", userValidation, createUser);
 
 /**
  * @swagger
@@ -204,10 +205,10 @@ userRouter.post("/login", loginUser);
 userRouter.patch("/role/:team_id/:id", authentication, authorization(["Project Manager"]), updateRole);
 
 
-userRouter.patch("/:id", authentication, updateUser);
+userRouter.patch("/:id", authentication, userValidation, updateUser);
 
 userRouter.get("/:id", authentication, getUser);
 
-userRouter.get("/logout",authentication, logoutUser)
+userRouter.get("/logout",authentication, logoutUser);
 
 module.exports = {userRouter}

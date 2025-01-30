@@ -40,6 +40,12 @@ app.use("/team",teamRouter);
 app.use("/comment",commentRouter);
 app.use("/attachment",attachmentRouter);
 
+
+app.use("/", (err, req,res,next)=>{
+    console.log(err);
+    res.status(500).json({message:"Something went wrong"});
+})
+
 app.listen(process.env.PORT,async()=>{
     try{
       await connection;

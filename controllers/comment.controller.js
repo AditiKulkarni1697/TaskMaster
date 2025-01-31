@@ -6,14 +6,15 @@ const createComment = async (req, res) => {
     const taskId = req.params.task_id;
     try{
 
-        const newComment = new CommentModel({comment,commented_by:req.user._id});
-        await newComment.save();
-
         const task = await TaskModel.findOne({_id:taskId});
 
         if(!task){
             return res.status(404).send({msg:"Task not found"});
         }
+        
+        const newComment = new CommentModel({comment,commented_by:req.token._id});
+        await newComment.save();
+
 
         task.comments.push(newComment._id);
         
@@ -21,6 +22,7 @@ const createComment = async (req, res) => {
 
         res.status(201).send({msg:"Comment created successfully"});
     }catch(err){
+        console.log("error in comment creation", err)
         res.status(500).send({msg:"Internal Server Error"});
     }
 }
@@ -43,14 +45,14 @@ const deleteComment = async (req, res) => {
     const commentId = req.params.id;
     try{
 
-        const user = req.user;
+        const user = req.token;
 
         const comment = await CommentModel.findOne({_id:commentId});
         if(!comment){
             return res.status(404).send({msg:"Comment not found"});
         }
 
-        if(comment.commented_by.toString() !== user._id.toString()){
+        if(comment.commented_by.toString() !== user._id.toString() && user.role !== "Project Manager" ){
             return res.status(403).send({msg:"Forbidden"});
         }
         

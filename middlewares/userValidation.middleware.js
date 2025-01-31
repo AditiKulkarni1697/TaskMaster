@@ -9,7 +9,7 @@ const userValidation = async (req,res,next) => {
         return res.status(400).send({msg:"Name must be between 3 to 50 characters"});
     }
 
-    const emailRegex = "^[^\s@]+@[^\s@]+\.[^\s@]+$";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!emailRegex.test(email)){
         return res.status(400).send({msg:"Invalid email"});
     }

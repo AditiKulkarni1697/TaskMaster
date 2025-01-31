@@ -3,19 +3,17 @@ TaskMaster: A Collaborative Task Tracking System
 
 For API Documentation visit : http://localhost:${process.env.PORT}/api-docs
 
-** The "Project Manager" role is assigned directly through the database interface. This ensures that only individuals with access to the database UI can update the "Project Manager" role, maintaining strict control over this critical role assignment.
-
 Task Master ERD
 
 ![alt text](image.png)
 
-** The "Project Manager" role is assigned directly through the database interface. This ensures that only individuals with access to the database UI can update the "Project Manager" role, maintaining strict control over this critical role assignment.
+The "Project Manager" role is assigned directly through the database interface. This ensures that only individuals with access to the database UI can update the "Project Manager" role, maintaining strict control over this critical role assignment.
 
 A user can create a new account so that he/she can access the task tracking platform.
 
-A user can log in to his/her account securely using my credentials.
+A user can log in to his/her account securely using his/her credentials.
 
-A user can view my profile and update his/her personal information.
+A user can view his/her profile and update his/her personal information.
 
 A task can be created by PM or TL inside a team. (TL should be member of the team where task is created).
 
@@ -29,7 +27,7 @@ A user can filter tasks based on their status (e.g., incomplete, completed).
 
 A user can search for tasks by title or description.
 
---A user can collaborate with team members by adding comments and attachments to tasks.
+A user can collaborate with team members by adding comments and attachments to tasks.
 
 A team can be created by Project Manager.
 

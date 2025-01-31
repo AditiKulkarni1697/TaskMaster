@@ -38,7 +38,7 @@ const deleteAttachment = async (req, res) => {
     const commentId = req.params.comment_id;
     try{
 
-        const user = req.user;
+        const user = req.token;
         const attachment = await AttachmentModel.findOne({_id:attachmentId});
 
         if(!attachment){
@@ -56,6 +56,7 @@ const deleteAttachment = async (req, res) => {
 
     }
     catch(err){
+        console.log("error in deleting attachment", err)
         res.status(500).send({msg:"Internal Server Error"});
     }
 }

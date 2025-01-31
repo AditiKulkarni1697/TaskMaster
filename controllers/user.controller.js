@@ -1,6 +1,8 @@
 const { UserModel } = require("../databases/mongodb/models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { BlacklistModel } = require("../databases/mongodb/models/blacklist.model");
+const { TeamModel } = require("../databases/mongodb/models/team.model");
 
 const createUser = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -40,7 +42,7 @@ const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { email: isPresent.email, role: isPresent.role },
+      { user: isPresent },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -52,21 +54,38 @@ const loginUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const userId = req.params.id;
-  const { name, email, password } = req.body;
+  const userId = req.token._id;
+  const { name, email, password, oldpassword} = req.body;
   try {
-    if (req.user._id !== userId) {
+    const payload = req.body;
+    if (req.token._id.toString() !== userId) {
       return res.status(403).send({ msg: "Forbidden" });
     }
-    
-    const hashed = await bcrypt.hash(password, 8);
-    await UserModel.findByIdAndUpdate(userId, {
-      name,
-      email,
-      password: hashed,
-    });
+     
+    const user = await UserModel.findById(userId);
+
+    if(email){
+    const alreadyPresent = await UserModel.findOne({ email: email });
+
+    if (alreadyPresent && alreadyPresent._id.toString() !== userId) {
+      return res.status(400).json({ message: "email already exists" });
+    }
+  }
+    if(password){
+
+      const isMatched = await bcrypt.compare(oldpassword, user.password)
+
+      if(!isMatched){
+        return res.status(400).send("Wrong password")
+      }
+      const hashed = await bcrypt.hash(password, 8);
+      payload["password"] = hashed
+    }
+    console.log("payload", payload)
+    await UserModel.findByIdAndUpdate(userId, payload);
     res.status(200).send({ msg: "User updated successfully" });
   } catch (err) {
+    console.log("error in updateuser function", err)
     res.status(500).send({ msg: "Internal Server Error" });
   }
 };
@@ -96,6 +115,16 @@ const updateRole = async (req, res) => {
     if (!team.members.includes(userId)) {
       return res.status(400).send({ msg: "User is not a member of the team" });
     }
+
+    if(!team.team_lead && role === "Team Lead"){
+      await TeamModel.findByIdAndUpdate(team._id, {team_lead: userId})
+    }
+
+    if(team.team_lead && role === "Team Lead" && team.team_lead !== userId){
+      return res.status(400).send({ msg: "Single team can not have multiple team leads" });
+    }
+
+
     await UserModel.findByIdAndUpdate(userId, { role });
 
     res.status(200).send({ msg: "Role updated successfully" });
@@ -123,10 +152,11 @@ const getUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    const token = new BlacklistModel({ token: req.token });
+    const token = new BlacklistModel({ token: req.headers.authorization });
     await token.save();
     res.status(200).send({ msg: "Logged out successfully" });
   } catch (err) {
+
     res.status(500).send({ msg: "Internal Server Error" });
   }
 };

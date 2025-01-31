@@ -11,7 +11,7 @@ const authentication = async (req, res, next) => {
         return res.status(401).send({msg: "Unauthorized"});
     }
 
-    const token = authorization.split(" ")[1];
+    const token = authorization;
     
     try{
 
@@ -27,16 +27,16 @@ const authentication = async (req, res, next) => {
             return res.status(401).send({msg: "Unauthorized"});
         }
 
-        const user = await UserModel.findOne({email: decoded.email});
+        const user = await UserModel.findOne({_id: decoded.user._id});
 
         if(!user){
             return res.status(401).send({msg: "Unauthorized"});
         }
-        req.user = user;
-        req.token = token;
+        req.token = decoded.user;
         next();
         
     }catch(err){
+        console.log("error in authentication", err)
         return res.status(500).send({msg: "Internal Server Error"});
     }
 }

@@ -225,7 +225,7 @@ teamRouter.get('/', authentication, getAllTeams);
  *                   type: string
  *                   example: Internal Server Error
  */
-teamRouter.put('/:id', authentication, authorization(["Project Manager", "Team Lead"]), teamValidation, updateTeam);
+teamRouter.patch('/:team_id', authentication, authorization(["Project Manager", "Team Lead"]), teamValidation, updateTeam);
 
 /**
  * @swagger
@@ -274,6 +274,6 @@ teamRouter.put('/:id', authentication, authorization(["Project Manager", "Team L
  *                   type: string
  *                   example: Internal Server Error
  */
-teamRouter.delete('/:id', authentication, authorization(["Project Manager", "Team Lead"]), deleteTeam);
+teamRouter.delete('/:id', authentication, authorization(["Project Manager"]), deleteTeam);
 
 module.exports = { teamRouter };

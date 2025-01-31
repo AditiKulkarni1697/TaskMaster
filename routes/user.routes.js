@@ -205,10 +205,12 @@ userRouter.post("/login", loginUser);
 userRouter.patch("/role/:team_id/:id", authentication, authorization(["Project Manager"]), updateRole);
 
 
-userRouter.patch("/:id", authentication, userValidation, updateUser);
+userRouter.patch("/", authentication, userValidation, updateUser);
+
+userRouter.get("/logout",authentication, logoutUser);
 
 userRouter.get("/:id", authentication, getUser);
 
-userRouter.get("/logout",authentication, logoutUser);
+
 
 module.exports = {userRouter}

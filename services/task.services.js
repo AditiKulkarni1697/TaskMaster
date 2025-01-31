@@ -20,6 +20,7 @@ const addTaskToTeam = async (teamId, taskId, assigned_to) => {
         }
         
     } catch (err) {
+        console.log("error in addTaskToTeam", err)
         throw new Error("Internal Server Error");
      };
     
@@ -34,7 +35,8 @@ const removeTaskFromTeam = async (teamId, taskId) => {
         }
 
         if(team.tasks.includes(taskId)){
-            team.tasks = team.tasks.filter(task => task !== taskId);    
+            console.log("deleting task present in team.tasks", taskId, team.tasks)
+            team.tasks = team.tasks.filter(task => task.toString() !== taskId);    
             await TeamModel.findByIdAndUpdate(teamId, team);
         }
     } catch (err) {

@@ -1,7 +1,7 @@
 # TaskMaster
 TaskMaster: A Collaborative Task Tracking System
 
-For API Documentation visit : http://localhost:${process.env.PORT}/api-docs
+For API Documentation visit : https://taskmaster-6qcu.onrender.com/api-docs
 
 Task Master ERD
 

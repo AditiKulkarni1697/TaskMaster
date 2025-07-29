@@ -4,6 +4,8 @@ const commentSchema = new mongoose.Schema({
     comment: {
         type: String,
         required: true,
+        minLength: 4,
+        maxLength: 100
     },
     commented_by: {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,7 +22,7 @@ const commentSchema = new mongoose.Schema({
             ref: "Attachment"
         }
     ]
-});
+}, {timestamps:true});
 
 const CommentModel = mongoose.model("Comment",commentSchema);
 

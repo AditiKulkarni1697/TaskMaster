@@ -24,7 +24,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: `http://localhost:${process.env.PORT}`,
+                url: `https://taskmaster-6qcu.onrender.com`,
             },
         ],
     },

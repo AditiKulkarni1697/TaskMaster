@@ -57,7 +57,7 @@ const updateUser = async (req, res) => {
   const userId = req.token._id;
   const { name, email, password, oldpassword} = req.body;
   try {
-    const payload = req.body;
+    const payload = {};
     if (req.token._id.toString() !== userId) {
       return res.status(403).send({ msg: "Forbidden" });
     }
@@ -70,6 +70,7 @@ const updateUser = async (req, res) => {
     if (alreadyPresent && alreadyPresent._id.toString() !== userId) {
       return res.status(400).json({ message: "email already exists" });
     }
+    payload["email"]= email;
   }
     if(password){
 
@@ -79,9 +80,11 @@ const updateUser = async (req, res) => {
         return res.status(400).send("Wrong password")
       }
       const hashed = await bcrypt.hash(password, 8);
-      payload["password"] = hashed
+      payload["password"] = hashed;
     }
-    console.log("payload", payload)
+    if(name){
+      payload["name"] = name;
+    }
     await UserModel.findByIdAndUpdate(userId, payload);
     res.status(200).send({ msg: "User updated successfully" });
   } catch (err) {

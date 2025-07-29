@@ -4,6 +4,8 @@ const teamSchema = new mongoose.Schema({
     team_name: {
         type: String,
         required: true,
+        minLength: 3,
+        maxlength: 50
     },
     team_lead: {
         type: mongoose.Schema.Types.ObjectId,
@@ -21,7 +23,7 @@ const teamSchema = new mongoose.Schema({
             ref: "Task",
         }
     ]
-});
+}, {timestamps: true});
 
 const TeamModel = mongoose.model("Team",teamSchema);
 

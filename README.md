@@ -3,6 +3,8 @@ TaskMaster: A Collaborative Task Tracking System
 
 For API Documentation visit : https://taskmaster-6qcu.onrender.com/api-docs
 
+![alt text](image-1.png)
+
 Task Master ERD
 
 ![alt text](image.png)
@@ -37,6 +39,4 @@ A team can be updated and deleted only by PM or TL.
 
 A user can securely log out of his/her account when he/she done using the platform.
 
---(Optional Extension) As a user, I want to receive notifications when a task is assigned to me or updated. (Implement real-time notifications using WebSockets or Server-Sent Events)
 
---(Optional but good to have) As a user, I want to integrate a generative AI model to automatically generate task descriptions or summaries based on user input, reducing manual effort in task creation.
